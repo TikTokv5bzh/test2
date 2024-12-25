@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>جدول الواجبات</title>
+    <style>
+        body {
+            font-family: 'Tajawal', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f5f9;
+        }
+        .container {
+            background: linear-gradient(145deg, #ffffff, #e6e9ef);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 90%;
+            max-width: 900px;
+            animation: fadeIn 1s ease-in-out;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 30px;
+        }
+        th, td {
+            padding: 15px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+        th {
+            background-color: #007BFF;
+            color: white;
+        }
+        select, input {
+            margin: 10px 0;
+            padding: 12px;
+            width: 100%;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        button {
+            margin-top: 20px;
+            padding: 12px 25px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            border-radius: 8px;
+            color: white;
+            background-color: #28a745;
+            box-shadow: 0 6px 15px rgba(40, 167, 69, 0.2);
+            transition: all 0.3s ease;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        .hidden {
+            display: none;
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📚 جدول الواجبات</h1>
+        <label for="grade">الفصل:</label>
+        <select id="grade" onchange="loadData()">
+            <option value="اول متوسط">اول متوسط</option>
+            <option value="ثاني متوسط">ثاني متوسط</option>
+            <option value="ثالث متوسط">ثالث متوسط</option>
+            <option value="اول ثانوي">اول ثانوي</option>
+            <option value="ثاني ثانوي">ثاني ثانوي</option>
+            <option value="ثالث ثانوي">ثالث ثانوي</option>
+        </select>
+
+        <label for="class">الشعبة:</label>
+        <select id="class" onchange="loadData()">
+            <option value="أ">أ</option>
+            <option value="ب">ب</option>
+            <option value="ج">ج</option>
+        </select>
+
+        <label>📅 التاريخ (هجري):</label>
+        <input type="text" id="hijri-date" readonly>
+
+        <h2>➕ إضافة واجب جديد</h2>
+        <select id="lesson-number">
+            <option value="1">الحصة 1</option>
+            <option value="2">الحصة 2</option>
+            <option value="3">الحصة 3</option>
+            <option value="4">الحصة 4</option>
+            <option value="5">الحصة 5</option>
+            <option value="6">الحصة 6</option>
+        </select>
+        <input type="text" id="subject" placeholder="المادة">
+        <input type="text" id="lesson-title" placeholder="عنوان الدرس">
+        <input type="text" id="homework" placeholder="الواجب">
+        <button onclick="addHomework()">إضافة</button>
+
+        <div id="capture-area">
+            <img src="school-logo.png" alt="شعار المدرسة" style="width: 100px; float: right;">
+            <table id="lessonTable">
+                <tr>
+                    <th>الحصة</th>
+                    <th>المادة</th>
+                    <th>عنوان الدرس</th>
+                    <th>الواجب</th>
+                </tr>
+            </table>
+        </div>
+        
+        <button onclick="saveData()">💾 حفظ</button>
+        <button onclick="downloadTable()">📥 تنزيل الجدول كصورة</button>
+        <button onclick="deleteData(false)" style="background-color:#dc3545;">🗑️ حذف البيانات</button>
+        <button onclick="deleteData(true)" style="background-color:#ffc107;">🗑️ حذف مع الحفظ</button>
+    </div>
+
+    <script>
+        function addHomework() {
+            const lessonNumber = document.getElementById('lesson-number').value;
+            const subject = document.getElementById('subject').value;
+            const lessonTitle = document.getElementById('lesson-title').value;
+            const homework = document.getElementById('homework').value;
+
+            const table = document.getElementById('lessonTable');
+            let exists = false;
+
+            for (let i = 1; i < table.rows.length; i++) {
+                if (table.rows[i].cells[0].innerText === lessonNumber) {
+                    exists = true;
+                    break;
+                }
+            }
+
+            if (!exists) {
+                const row = table.insertRow();
+                row.insertCell(0).innerText = lessonNumber;
+                row.insertCell(1).innerText = subject;
+                row.insertCell(2).innerText = lessonTitle;
+                row.insertCell(3).innerText = homework;
+            }
+        }
+    </script>
+</body>
+</html>

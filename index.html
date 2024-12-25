@@ -76,11 +76,11 @@
         }
     </style>
 </head>
-<body onload="loadData()">
+<body>
     <div class="container">
         <h1>📚 جدول الواجبات</h1>
         <label for="grade">الفصل:</label>
-        <select id="grade" onchange="loadData()">
+        <select id="grade">
             <option value="اول متوسط">اول متوسط</option>
             <option value="ثاني متوسط">ثاني متوسط</option>
             <option value="ثالث متوسط">ثالث متوسط</option>
@@ -90,7 +90,7 @@
         </select>
 
         <label for="class">الشعبة:</label>
-        <select id="class" onchange="loadData()">
+        <select id="class">
             <option value="أ">أ</option>
             <option value="ب">ب</option>
             <option value="ج">ج</option>
@@ -126,6 +126,9 @@
         </div>
         
         <button onclick="saveData()">💾 حفظ</button>
+        <button onclick="downloadTable()">📥 تنزيل الجدول كصورة</button>
+        <button onclick="deleteData(false)" style="background-color:#dc3545;">🗑️ حذف البيانات</button>
+        <button onclick="deleteData(true)" style="background-color:#ffc107;">🗑️ حذف مع الحفظ</button>
     </div>
 
     <script>
@@ -156,39 +159,24 @@
 
         function saveData() {
             const table = document.getElementById('lessonTable');
-            const data = [];
+            const grade = document.getElementById('grade').value;
+            const classValue = document.getElementById('class').value;
+            let data = `الفصل: ${grade}\nالشعبة: ${classValue}\n\n`;
 
             for (let i = 1; i < table.rows.length; i++) {
-                let row = {
-                    lesson: table.rows[i].cells[0].innerText,
-                    subject: table.rows[i].cells[1].innerText,
-                    title: table.rows[i].cells[2].innerText,
-                    homework: table.rows[i].cells[3].innerText
-                };
-                data.push(row);
+                let row = `${table.rows[i].cells[0].innerText},` +
+                          `${table.rows[i].cells[1].innerText},` +
+                          `${table.rows[i].cells[2].innerText},` +
+                          `${table.rows[i].cells[3].innerText}\n`;
+                data += row;
             }
 
-            localStorage.setItem('homeworkData', JSON.stringify(data));
-            alert('تم حفظ البيانات بنجاح!');
-        }
-
-        function loadData() {
-            const data = JSON.parse(localStorage.getItem('homeworkData'));
-            const table = document.getElementById('lessonTable');
-
-            while (table.rows.length > 1) {
-                table.deleteRow(1);
-            }
-
-            if (data) {
-                data.forEach(row => {
-                    let newRow = table.insertRow();
-                    newRow.insertCell(0).innerText = row.lesson;
-                    newRow.insertCell(1).innerText = row.subject;
-                    newRow.insertCell(2).innerText = row.title;
-                    newRow.insertCell(3).innerText = row.homework;
-                });
-            }
+            const blob = new Blob([data], { type: 'text/plain' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `lesson_${grade}_${classValue}.txt`;
+            link.click();
+            alert('تم حفظ البيانات بنجاح في ملف نصي!');
         }
     </script>
 </body>

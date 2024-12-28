@@ -126,44 +126,73 @@
         </div>
     </div>
 
-    <script>
-        document.getElementById('saveBtn').addEventListener('click', function () {
-            const table = document.getElementById('homeworkTable').querySelector('tbody');
-            const classSelect = document.getElementById('classSelect').value;
-            const sectionSelect = document.getElementById('sectionSelect').value;
-            const lessonSelect = document.getElementById('lessonSelect').value;
-            const subjectInput = document.getElementById('subjectInput').value;
-            const lessonTitleInput = document.getElementById('lessonTitleInput').value;
-            const homeworkDescription = document.getElementById('homeworkDescription').value;
+<script>
+document.getElementById('saveBtn').addEventListener('click', function () {
+    const table = document.getElementById('homeworkTable').querySelector('tbody');
+    const classSelect = document.getElementById('classSelect').value;
+    const sectionSelect = document.getElementById('sectionSelect').value;
+    const lessonSelect = document.getElementById('lessonSelect').value;
+    const subjectInput = document.getElementById('subjectInput').value;
+    const lessonTitleInput = document.getElementById('lessonTitleInput').value;
+    const homeworkDescription = document.getElementById('homeworkDescription').value;
 
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td>${classSelect}</td>
-                <td>${sectionSelect}</td>
-                <td>${lessonSelect}</td>
-                <td>${subjectInput}</td>
-                <td>${lessonTitleInput}</td>
-                <td class="homework-description">${homeworkDescription}</td>
-                <td>
-                    <button class="btn btn-sm btn-warning edit-btn">تعديل</button>
-                    <button class="btn btn-sm btn-danger delete-btn">حذف</button>
-                </td>
-            `;
-            table.appendChild(row);
+    // دالة لتحويل قيمة الفصل إلى نص عربي
+    function getClassName(value) {
+        const classes = {
+            1: 'الأول متوسط',
+            2: 'الثاني متوسط',
+            // ... باقي الفصول ...
+        };
+        return classes[value] || '';
+    }
 
-            row.querySelector('.edit-btn').onclick = function () {
-                const newDesc = prompt('عدل وصف الواجب:', homeworkDescription);
-                if (newDesc !== null) {
-                    row.querySelector('.homework-description').textContent = newDesc;
-                }
-            };
+    // دالة لتحويل قيمة الحصة إلى نص عربي
+    function getLessonName(value) {
+        const lessons = {
+            1: 'الأولى',
+            2: 'الثانية',
+            // ... باقي الحصص ...
+        };
+        return lessons[value] || '';
+    }
 
-            row.querySelector('.delete-btn').onclick = function () {
-                if (confirm('هل أنت متأكد من حذف الواجب؟')) {
-                    row.remove();
-                }
-            };
+    // دالة لتحويل قيمة الشعبة إلى نص عربي
+    function getSectionName(value) {
+        const sections = {
+            A: 'أ',
+            B: 'ب',
+            C: 'ج',
+        };
+        return sections[value] || '';
+    }
+
+    const row = document.createElement('tr');
+    row.innerHTML = `
+        <td>${getClassName(classSelect)}</td>
+        <td>الشعبة ${getSectionName(sectionSelect)}</td>
+        <td>الحصة ${getLessonName(lessonSelect)}</td>
+        <td>${subjectInput}</td>
+        <td>${lessonTitleInput}</td>
+        <td class="homework-description">${homeworkDescription}</td>
+        <td>
+            <button class="btn btn-sm btn-warning edit-btn">تعديل</button>
+            <button class="btn btn-sm btn-danger delete-btn">حذف</button>
+        </td>
+    `;
+    table.appendChild(row);
+
+    // ... باقي الشفرة كما هي ...
+
+    // زر التقاط لقطة شاشة وحفظها على الخادم (مثال باستخدام مكتبة html2canvas)
+    document.getElementById('captureBtn').addEventListener('click', function () {
+        html2canvas(document.getElementById('homeworkTable')).then(canvas => {
+            // هنا قم بإرسال canvas إلى الخادم لحفظه
+            // يمكنك استخدام XMLHttpRequest أو fetch أو أي طريقة أخرى لإرسال البيانات
+            const dataURL = canvas.toDataURL();
+            // ... قم بإرسال dataURL إلى الخادم ...
         });
-    </script>
+    });
+});
+</script>
 </body>
 </html>

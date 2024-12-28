@@ -24,7 +24,6 @@
                     </div>
                 </div>
             </div>
-
             <!-- أزرار التنقل -->
             <div class="row mt-3">
                 <div class="col-12 d-flex justify-content-center gap-3">
@@ -40,7 +39,7 @@
         <div class="row mb-4">
             <div class="col-md-6">
                 <select class="form-select" id="classSelect">
-                    <option selected disabled>اختر الفصل الدراسي</option>
+                    <option selected>اختر الفصل الدراسي</option>
                     <option value="1">الأول متوسط</option>
                     <option value="2">الثاني متوسط</option>
                     <option value="3">الثالث متوسط</option>
@@ -51,10 +50,10 @@
             </div>
             <div class="col-md-6">
                 <select class="form-select" id="sectionSelect">
-                    <option selected disabled>اختر الشعبة</option>
-                    <option value="A">الشعبة أ</option>
-                    <option value="B">الشعبة ب</option>
-                    <option value="C">الشعبة ج</option>
+                    <option selected>اختر الشعبة</option>
+                    <option value="A">أ</option>
+                    <option value="B">ب</option>
+                    <option value="C">ج</option>
                 </select>
             </div>
         </div>
@@ -66,11 +65,13 @@
                 <div class="row g-3">
                     <div class="col-md-3">
                         <select class="form-select" id="lessonSelect">
-                            <option selected disabled>اختر الحصة</option>
+                            <option selected>اختر الحصة</option>
                             <option value="1">الأولى</option>
                             <option value="2">الثانية</option>
                             <option value="3">الثالثة</option>
                             <option value="4">الرابعة</option>
+                            <option value="5">الخامسة</option>
+                            <option value="6">السادسة</option>
                         </select>
                     </div>
                     <div class="col-md-3">
@@ -115,7 +116,7 @@
         <!-- أزرار الإجراءات -->
         <div class="row">
             <div class="col-md-4 mb-3">
-                <button class="btn btn-success w-100" id="screenshotBtn">التقاط لقطة شاشة</button>
+                <button class="btn btn-info w-100" id="screenshotBtn">لقطة شاشة</button>
             </div>
             <div class="col-md-4 mb-3">
                 <button class="btn btn-warning w-100">مسح البيانات</button>
@@ -127,35 +128,42 @@
     </div>
 
     <script>
-        const classNames = {
-            1: 'الأول متوسط',
-            2: 'الثاني متوسط',
-            3: 'الثالث متوسط',
-            4: 'الأول ثانوي',
-            5: 'الثاني ثانوي',
-            6: 'الثالث ثانوي'
+        const classMapping = {
+            "1": "الأول متوسط",
+            "2": "الثاني متوسط",
+            "3": "الثالث متوسط",
+            "4": "الأول ثانوي",
+            "5": "الثاني ثانوي",
+            "6": "الثالث ثانوي"
         };
 
         document.getElementById('saveBtn').addEventListener('click', function () {
-            const classText = classNames[document.getElementById('classSelect').value];
-            const sectionText = document.getElementById('sectionSelect').selectedOptions[0].text;
-            const lessonText = document.getElementById('lessonSelect').selectedOptions[0].text;
-            const subject = document.getElementById('subjectInput').value;
-
             const table = document.querySelector('#homeworkTable tbody');
-            table.innerHTML += `<tr><td>${classText}</td><td>${sectionText}</td><td>${lessonText}</td><td>${subject}</td></tr>`;
+            const classSelect = document.getElementById('classSelect').value;
+            const sectionSelect = document.getElementById('sectionSelect').value;
+            const lessonSelect = document.getElementById('lessonSelect').value;
+            const subjectInput = document.getElementById('subjectInput').value;
+
+            const row = `<tr>
+                <td>${classMapping[classSelect]}</td>
+                <td>${sectionSelect}</td>
+                <td>${lessonSelect}</td>
+                <td>${subjectInput}</td>
+                <td><button class="btn btn-danger btn-sm">حذف</button></td>
+            </tr>`;
+            table.innerHTML += row;
         });
 
-        document.getElementById('screenshotBtn').onclick = function () {
-            html2canvas(document.querySelector('#homeworkTable')).then(canvas => {
+        document.getElementById('screenshotBtn').addEventListener('click', function () {
+            html2canvas(document.querySelector("#homeworkTable")).then(canvas => {
                 canvas.toBlob(blob => {
-                    fetch('/save_screenshot', {
-                        method: 'POST',
-                        body: blob
-                    });
+                    const formData = new FormData();
+                    formData.append('screenshot', blob, 'screenshot.png');
+
+                    fetch('/save-screenshot', { method: 'POST', body: formData });
                 });
             });
-        };
+        });
     </script>
 </body>
 </html>

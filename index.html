@@ -113,22 +113,10 @@
                 </div>
             </div>
         </div>
-
-        <!-- أزرار الإجراءات -->
-        <div class="row">
-            <div class="col-md-4 mb-3">
-                <button class="btn btn-success w-100">تحميل الجدول كصورة</button>
-            </div>
-            <div class="col-md-4 mb-3">
-                <button class="btn btn-warning w-100">مسح البيانات</button>
-            </div>
-            <div class="col-md-4 mb-3">
-                <button class="btn btn-danger w-100">مسح وحفظ في Logs</button>
-            </div>
-        </div>
     </div>
 
     <script>
+        // حفظ الواجب
         document.getElementById('saveBtn').addEventListener('click', function () {
             const classSelect = document.getElementById('classSelect').value;
             const sectionSelect = document.getElementById('sectionSelect').value;
@@ -138,28 +126,34 @@
             const homeworkDescription = document.getElementById('homeworkDescription').value;
 
             const table = document.getElementById('homeworkTable').querySelector('tbody');
-            const homeworkId = `${classSelect}-${sectionSelect}-${lessonSelect}-${subjectInput}-${lessonTitleInput}`;
 
-            let existingRow = document.querySelector(`tr[data-id="${homeworkId}"]`);
-            if (existingRow) {
-                existingRow.querySelector('.homework-description').textContent = homeworkDescription;
-            } else {
-                const row = document.createElement('tr');
-                row.setAttribute('data-id', homeworkId);
-                row.innerHTML = `
-                    <td>${classSelect}</td>
-                    <td>${sectionSelect}</td>
-                    <td>${lessonSelect}</td>
-                    <td>${subjectInput}</td>
-                    <td>${lessonTitleInput}</td>
-                    <td class="homework-description">${homeworkDescription}</td>
-                    <td>
-                        <button class="btn btn-sm btn-warning edit-btn">تعديل</button>
-                        <button class="btn btn-sm btn-danger delete-btn">حذف</button>
-                    </td>
-                `;
-                table.appendChild(row);
-            }
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${classSelect}</td>
+                <td>${sectionSelect}</td>
+                <td>${lessonSelect}</td>
+                <td>${subjectInput}</td>
+                <td>${lessonTitleInput}</td>
+                <td class="homework-description">${homeworkDescription}</td>
+                <td>
+                    <button class="btn btn-sm btn-warning edit-btn">تعديل</button>
+                    <button class="btn btn-sm btn-danger delete-btn">حذف</button>
+                </td>
+            `;
+            table.appendChild(row);
+
+            // تفعيل زر الحذف
+            row.querySelector('.delete-btn').addEventListener('click', function () {
+                row.remove();
+            });
+
+            // تفعيل زر التعديل
+            row.querySelector('.edit-btn').addEventListener('click', function () {
+                const newDesc = prompt('قم بتعديل الوصف:', row.querySelector('.homework-description').textContent);
+                if (newDesc !== null) {
+                    row.querySelector('.homework-description').textContent = newDesc;
+                }
+            });
         });
     </script>
 </body>

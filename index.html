@@ -106,26 +106,35 @@
                                 <th>الإجراءات</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <!-- الواجبات ستُضاف هنا -->
-                        </tbody>
+                        <tbody></tbody>
                     </table>
                 </div>
+            </div>
+        </div>
+
+        <!-- أزرار الإجراءات -->
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <button class="btn btn-success w-100">تحميل الجدول كصورة</button>
+            </div>
+            <div class="col-md-4 mb-3">
+                <button class="btn btn-warning w-100">مسح البيانات</button>
+            </div>
+            <div class="col-md-4 mb-3">
+                <button class="btn btn-danger w-100">مسح وحفظ في Logs</button>
             </div>
         </div>
     </div>
 
     <script>
-        // حفظ الواجب
         document.getElementById('saveBtn').addEventListener('click', function () {
+            const table = document.getElementById('homeworkTable').querySelector('tbody');
             const classSelect = document.getElementById('classSelect').value;
             const sectionSelect = document.getElementById('sectionSelect').value;
             const lessonSelect = document.getElementById('lessonSelect').value;
             const subjectInput = document.getElementById('subjectInput').value;
             const lessonTitleInput = document.getElementById('lessonTitleInput').value;
             const homeworkDescription = document.getElementById('homeworkDescription').value;
-
-            const table = document.getElementById('homeworkTable').querySelector('tbody');
 
             const row = document.createElement('tr');
             row.innerHTML = `
@@ -142,18 +151,18 @@
             `;
             table.appendChild(row);
 
-            // تفعيل زر الحذف
-            row.querySelector('.delete-btn').addEventListener('click', function () {
-                row.remove();
-            });
-
-            // تفعيل زر التعديل
-            row.querySelector('.edit-btn').addEventListener('click', function () {
-                const newDesc = prompt('قم بتعديل الوصف:', row.querySelector('.homework-description').textContent);
+            row.querySelector('.edit-btn').onclick = function () {
+                const newDesc = prompt('عدل وصف الواجب:', homeworkDescription);
                 if (newDesc !== null) {
                     row.querySelector('.homework-description').textContent = newDesc;
                 }
-            });
+            };
+
+            row.querySelector('.delete-btn').onclick = function () {
+                if (confirm('هل أنت متأكد من حذف الواجب؟')) {
+                    row.remove();
+                }
+            };
         });
     </script>
 </body>

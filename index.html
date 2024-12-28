@@ -117,13 +117,13 @@
         <!-- أزرار الإجراءات -->
         <div class="row">
             <div class="col-md-4 mb-3">
-                <button class="btn btn-success w-100" id="downloadBtn">تحميل الجدول كصورة</button>
+                <button class="btn btn-success w-100">تحميل الجدول كصورة</button>
             </div>
             <div class="col-md-4 mb-3">
-                <button class="btn btn-warning w-100" id="clearDataBtn">مسح البيانات</button>
+                <button class="btn btn-warning w-100">مسح البيانات</button>
             </div>
             <div class="col-md-4 mb-3">
-                <button class="btn btn-danger w-100" id="clearAndSaveLogsBtn">مسح وحفظ في Logs</button>
+                <button class="btn btn-danger w-100">مسح وحفظ في Logs</button>
             </div>
         </div>
     </div>
@@ -137,23 +137,15 @@
             const lessonTitleInput = document.getElementById('lessonTitleInput').value;
             const homeworkDescription = document.getElementById('homeworkDescription').value;
 
-            if (!classSelect || !sectionSelect || !lessonSelect || !subjectInput || !lessonTitleInput) {
-                alert('يرجى تعبئة جميع الحقول.');
-                return;
-            }
-
             const table = document.getElementById('homeworkTable').querySelector('tbody');
             const homeworkId = `${classSelect}-${sectionSelect}-${lessonSelect}-${subjectInput}-${lessonTitleInput}`;
 
-            // التحقق إذا كان الواجب موجود بالفعل
             let existingRow = document.querySelector(`tr[data-id="${homeworkId}"]`);
             if (existingRow) {
-                // تحديث البيانات في حال التكرار
                 existingRow.querySelector('.homework-description').textContent = homeworkDescription;
             } else {
-                // إضافة الواجب إذا لم يكن موجوداً
                 const row = document.createElement('tr');
-                row.setAttribute('data-id', homeworkId);  // إضافة معرّف فريد
+                row.setAttribute('data-id', homeworkId);
                 row.innerHTML = `
                     <td>${classSelect}</td>
                     <td>${sectionSelect}</td>
@@ -161,7 +153,10 @@
                     <td>${subjectInput}</td>
                     <td>${lessonTitleInput}</td>
                     <td class="homework-description">${homeworkDescription}</td>
-                    <td><button class="btn btn-sm btn-danger delete-btn">حذف</button></td>
+                    <td>
+                        <button class="btn btn-sm btn-warning edit-btn">تعديل</button>
+                        <button class="btn btn-sm btn-danger delete-btn">حذف</button>
+                    </td>
                 `;
                 table.appendChild(row);
             }

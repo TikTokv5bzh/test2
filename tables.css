@@ -1,0 +1,142 @@
+.logo {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.main-header {
+    background-color: #f8f9fa;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.header-logo {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.school-name {
+    color: #2c3e50;
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.school-motto {
+    color: #7f8c8d;
+    font-size: 1rem;
+}
+
+.current-date {
+    text-align: left;
+}
+
+.hijri-date {
+    color: #2c3e50;
+    font-weight: 600;
+}
+
+.gregorian-date {
+    color: #7f8c8d;
+    font-size: 0.9rem;
+}
+
+.day-name {
+    color: #7f8c8d;
+    font-size: 1.1rem;
+}
+
+.btn {
+    padding: 0.5rem 1.5rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.table {
+    vertical-align: middle;
+}
+
+.card {
+    border: none;
+    box-shadow: 0 0 20px rgba(0,0,0,0.08);
+    border-radius: 12px;
+}
+
+.class-card, .section-card {
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.class-card:hover, .section-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+}
+
+.form-control, .form-select {
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+    padding: 0.75rem;
+}
+
+.form-control:focus, .form-select:focus {
+    box-shadow: 0 0 0 3px rgba(13,110,253,0.15);
+}
+
+.homework-note {
+    font-size: 0.85rem;
+    color: #666;
+    margin-top: 0.5rem;
+    padding-top: 0.5rem;
+    border-top: 1px dashed #ddd;
+}
+
+@media (max-width: 768px) {
+    .card-body {
+        padding: 1rem;
+    }
+    
+    .table-responsive {
+        margin: 0 -1rem;
+    }
+
+    .school-name {
+        font-size: 1.2rem;
+    }
+
+    .school-motto {
+        font-size: 0.9rem;
+    }
+
+    .header-logo {
+        width: 40px;
+        height: 40px;
+    }
+}
+
+.table-bordered {
+    border: 1px solid #dee2e6;
+}
+
+.table-bordered th,
+.table-bordered td {
+    border: 1px solid #dee2e6;
+    padding: 1rem;
+    text-align: center;
+}
+
+.table-bordered thead th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+}
+
+.welcome-text {
+    color: #2c3e50;
+    font-weight: 600;
+    font-size: 1.8rem;
+}

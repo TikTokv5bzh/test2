@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إدارة جدول الحصص والواجبات</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+    <link href="add.css" rel="stylesheet">
+</head>
+<body>
+    <header class="main-header py-3 mb-4">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-auto">
+                    <img src="https://images.unsplash.com/photo-1497633762265-9d179a990aa6" alt="شعار المدرسة" class="header-logo">
+                </div>
+                <div class="col">
+                    <h1 class="school-name mb-1">مدرسة المستقبل الثانوية</h1>
+                    <p class="school-motto mb-0">نحو تعليم متميز</p>
+                </div>
+                <div class="col-auto text-start">
+                    <div class="current-date">
+                        <div class="hijri-date mb-1">١٥ رجب ١٤٤٥</div>
+                        <div class="gregorian-date">٢٧ يناير ٢٠٢٤</div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-12 d-flex justify-content-center gap-3">
+                    <button class="btn btn-primary">عرض الجداول</button>
+                    <button class="btn btn-success" onclick="window.location.href='index.html'">أضافة الواجبات</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container py-4">
+        <div class="row mb-4">
+            <div class="col-12 text-center">
+                <h2 class="welcome-text mb-4">مرحباً بكم في نظام إدارة الجداول المدرسية</h2>
+            </div>
+        </div>
+
+        <div class="row g-4 mb-4">
+            <div class="col-md-4">
+                <div class="card class-card" onclick="showSections('middle1')">
+                    <div class="card-body text-center">
+                        <h3>أول متوسط</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card class-card" onclick="showSections('middle2')">
+                    <div class="card-body text-center">
+                        <h3>ثاني متوسط</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card class-card" onclick="showSections('middle3')">
+                    <div class="card-body text-center">
+                        <h3>ثالث متوسط</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card class-card" onclick="showSections('high1')">
+                    <div class="card-body text-center">
+                        <h3>أول ثانوي</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card class-card" onclick="showSections('high2')">
+                    <div class="card-body text-center">
+                        <h3>ثاني ثانوي</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card class-card" onclick="showSections('high3')">
+                    <div class="card-body text-center">
+                        <h3>ثالث ثانوي</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="sectionsContainer" class="row g-4 mb-4" style="display: none;">
+            <div class="col-12 mb-3">
+                <button class="btn btn-secondary d-flex align-items-center gap-2" onclick="backToClasses()"><i class="bi bi-arrow-right"></i> رجوع</button>
+            </div>
+            <div class="col-md-4">
+                <div class="card section-card" onclick="showSchedule('A')">
+                    <div class="card-body text-center">
+                        <h4>الشعبة أ</h4>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card section-card" onclick="showSchedule('B')">
+                    <div class="card-body text-center">
+                        <h4>الشعبة ب</h4>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card section-card" onclick="showSchedule('C')">
+                    <div class="card-body text-center">
+                        <h4>الشعبة ج</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="scheduleContainer" class="card mb-4" style="display: none;">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <button class="btn btn-secondary d-flex align-items-center gap-2" onclick="backToSections()">🔙 رجوع للشعب</button>
+                    <h4 class="card-title mb-0 mx-auto">جدول الواجبات</h4>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>الحصة</th>
+                                <th>المادة والواجب</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>الأولى</td>
+                                <td>
+                                    <div>رياضيات</div>
+                                    <div class="homework-note">واجب: حل تمارين ص ٤٥</div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>الثانية</td>
+                                <td>
+                                    <div>لغة عربية</div>
+                                    <div class="homework-note">واجب: كتابة موضوع تعبير</div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>الثالثة</td>
+                                <td>
+                                    <div>علوم</div>
+                                    <div class="homework-note">واجب: حل أسئلة الفصل</div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>الرابعة</td>
+                                <td>
+                                    <div>تربية إسلامية</div>
+                                    <div class="homework-note">واجب: تسميع الآيات</div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>الخامسة</td>
+                                <td>
+                                    <div>تربية فنية</div>
+                                    <div class="homework-note">واجب: تلوين اللوحة</div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>السادسة</td>
+                                <td>
+                                    <div>لغة إنجليزية</div>
+                                    <div class="homework-note">واجب: ترجمة النص</div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function showSections(classId) {
+            document.querySelector('.row.g-4.mb-4').style.display = 'none';
+            document.getElementById('sectionsContainer').style.display = 'flex';
+        }
+
+        function showSchedule(section) {
+            document.getElementById('sectionsContainer').style.display = 'none';
+            document.getElementById('scheduleContainer').style.display = 'block';
+        }
+
+        function backToClasses() {
+            document.querySelector('.row.g-4.mb-4').style.display = 'flex';
+            document.getElementById('sectionsContainer').style.display = 'none';
+        }
+
+        function backToSections() {
+            document.getElementById('scheduleContainer').style.display = 'none';
+            document.getElementById('sectionsContainer').style.display = 'flex';
+        }
+    </script>
+</body>
+</html>

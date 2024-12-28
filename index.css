@@ -1,4 +1,12 @@
 .logo {
+    max-width: 100px;
+}
+.main-header {
+    background-color: #f8f9fa;
+    border-bottom: 2px solid #dee2e6;
+}
+
+.logo {
     width: 100px;
     height: 100px;
     object-fit: cover;

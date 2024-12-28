@@ -193,6 +193,35 @@ document.getElementById('saveBtn').addEventListener('click', function () {
         });
     });
 });
+
+document.getElementById('saveBtn').addEventListener('click', function () {
+    // ... نفس الكود السابق لإنشاء الصف ...
+
+    // تنظيف المدخلات بعد إضافة صف جديد
+    document.getElementById('subjectInput').value = '';
+    document.getElementById('lessonTitleInput').value = '';
+    document.getElementById('homeworkDescription').value = '';
+
+    // ... باقي الكود السابق ...
+});
+
+function updateRow(row, newDescription) {
+    row.querySelector('.homework-description').textContent = newDescription;
+}
+
+function deleteRow(row) {
+    if (confirm('هل أنت متأكد من حذف الواجب؟')) {
+        row.remove();
+    }
+}
+
+// زر التقاط لقطة شاشة
+document.getElementById('captureBtn').addEventListener('click', function () {
+    html2canvas(document.getElementById('homeworkTable')).then(canvas => {
+        const dataURL = canvas.toDataURL();
+        console.log(dataURL); // استبدل هذا بسلوك إرسال البيانات إلى الخادم
+    });
+});
 </script>
 </body>
 </html>

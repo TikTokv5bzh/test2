@@ -23,13 +23,6 @@
                     </div>
                 </div>
             </div>
-            <!-- أزرار التنقل -->
-            <div class="row mt-3">
-                <div class="col-12 d-flex justify-content-center gap-3">
-                    <button class="btn btn-primary" onclick="window.location.href='tables.html'">عرض الجداول</button>
-                    <button class="btn btn-success">إضافة الواجبات</button>
-                </div>
-            </div>
         </div>
     </header>
 
@@ -38,7 +31,7 @@
         <div class="row mb-4">
             <div class="col-md-6">
                 <select class="form-select" id="classSelect">
-                    <option selected>اختر الفصل الدراسي</option>
+                    <option selected disabled>اختر الفصل الدراسي</option>
                     <option value="1">الأول متوسط</option>
                     <option value="2">الثاني متوسط</option>
                     <option value="3">الثالث متوسط</option>
@@ -49,7 +42,7 @@
             </div>
             <div class="col-md-6">
                 <select class="form-select" id="sectionSelect">
-                    <option selected>اختر الشعبة</option>
+                    <option selected disabled>اختر الشعبة</option>
                     <option value="A">الشعبة أ</option>
                     <option value="B">الشعبة ب</option>
                     <option value="C">الشعبة ج</option>
@@ -63,27 +56,16 @@
                 <h4 class="card-title mb-4">إضافة الواجب</h4>
                 <div class="row g-3">
                     <div class="col-md-3">
-                        <select class="form-select" id="lessonSelect">
-                            <option selected>اختر الحصة</option>
-                            <option value="1">الأولى</option>
-                            <option value="2">الثانية</option>
-                            <option value="3">الثالثة</option>
-                            <option value="4">الرابعة</option>
-                            <option value="5">الخامسة</option>
-                            <option value="6">السادسة</option>
-                        </select>
-                    </div>
-                    <div class="col-md-3">
                         <input type="text" class="form-control" id="subjectInput" placeholder="المادة">
                     </div>
                     <div class="col-md-3">
                         <input type="text" class="form-control" id="lessonTitleInput" placeholder="عنوان الدرس">
                     </div>
-                    <div class="col-md-3">
-                        <button class="btn btn-primary w-100" id="saveBtn">حفظ الواجب</button>
-                    </div>
-                    <div class="col-12">
+                    <div class="col-md-6">
                         <textarea class="form-control" id="homeworkDescription" rows="3" placeholder="وصف الواجب"></textarea>
+                    </div>
+                    <div class="col-md-3 mt-3">
+                        <button class="btn btn-primary w-100" id="saveBtn">حفظ الواجب</button>
                     </div>
                 </div>
             </div>
@@ -93,13 +75,12 @@
         <div class="card mb-4">
             <div class="card-body">
                 <h4 class="card-title mb-4">قائمة الواجبات</h4>
-                <div class="table-responsive">
+                <div class="table-responsive" id="tableContainer">
                     <table class="table table-hover" id="homeworkTable">
                         <thead class="table-light">
                             <tr>
                                 <th>الفصل</th>
                                 <th>الشعبة</th>
-                                <th>الحصة</th>
                                 <th>المادة</th>
                                 <th>عنوان الدرس</th>
                                 <th>الوصف</th>
@@ -126,21 +107,22 @@
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas"></script>
+
     <script>
         document.getElementById('saveBtn').addEventListener('click', function () {
-            const table = document.getElementById('homeworkTable').querySelector('tbody');
-            const classSelect = document.getElementById('classSelect').value;
-            const sectionSelect = document.getElementById('sectionSelect').value;
-            const lessonSelect = document.getElementById('lessonSelect').value;
+            const classSelect = document.getElementById('classSelect');
+            const sectionSelect = document.getElementById('sectionSelect');
             const subjectInput = document.getElementById('subjectInput').value;
             const lessonTitleInput = document.getElementById('lessonTitleInput').value;
             const homeworkDescription = document.getElementById('homeworkDescription').value;
 
+            const table = document.getElementById('homeworkTable').querySelector('tbody');
+
             const row = document.createElement('tr');
             row.innerHTML = `
-                <td>${classSelect}</td>
-                <td>${sectionSelect}</td>
-                <td>${lessonSelect}</td>
+                <td>${classSelect.options[classSelect.selectedIndex].text}</td>
+                <td>${sectionSelect.options[sectionSelect.selectedIndex].text}</td>
                 <td>${subjectInput}</td>
                 <td>${lessonTitleInput}</td>
                 <td class="homework-description">${homeworkDescription}</td>
@@ -159,11 +141,31 @@
             };
 
             row.querySelector('.delete-btn').onclick = function () {
-                if (confirm('هل أنت متأكد من حذف الواجب؟')) {
+                if (confirm('هل تريد حذف الواجب؟')) {
                     row.remove();
                 }
             };
         });
+
+        function captureScreenshot() {
+            html2canvas(document.querySelector("#tableContainer")).then(canvas => {
+                canvas.toBlob(function (blob) {
+                    const formData = new FormData();
+                    formData.append('screenshot', blob, 'screenshot.png');
+                    
+                    fetch('/upload-screenshot', {
+                        method: 'POST',
+                        body: formData
+                    }).then(response => {
+                        if (response.ok) {
+                            alert('تم حفظ لقطة الشاشة بنجاح على الخادم');
+                        } else {
+                            alert('حدث خطأ أثناء الحفظ');
+                        }
+                    });
+                });
+            });
+        }
     </script>
 </body>
 </html>
